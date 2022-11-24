@@ -6,17 +6,29 @@ using System.Threading.Tasks;
 using Xunit;
 using Alura.Estacionamento.Modelos;
 using Alura.Estacionamento.Alura.Estacionamento.Modelos;
+using Xunit.Abstractions;
 
 namespace Alura.Estacionamento.Tests
 {
-    public class PatioTestes
+    public class PatioTestes : IDisposable
     {
+        private Veiculo veiculo;
+        private Patio estacionamento;
+        public ITestOutputHelper saidaConsoleTeste;
+
+        public PatioTestes(ITestOutputHelper _saidaConsoleTeste)
+        {
+            saidaConsoleTeste = _saidaConsoleTeste;
+            _saidaConsoleTeste.WriteLine("Construtor Invocado.");
+            veiculo = new Veiculo();
+            estacionamento = new Patio();
+        }
+
         [Fact]
-        public void ValidarFaturamento()
+        public void ValidarFaturamentoDoEstacionamentoComUmVeiculo()
         {
             //Arrange
-            var estacionamento = new Patio();
-            var veiculo = new Veiculo
+            veiculo = new Veiculo
             {
                 Proprietario = "Ricardo Souza",
                 Tipo = TipoVeiculo.Automovel,
@@ -44,8 +56,7 @@ namespace Alura.Estacionamento.Tests
         public void ValidaFaturamentoComVariosVeiculos(string proprietario, string placa, string cor, string modelo)
         {
             //Arrange
-            Patio estacionamento = new Patio();
-            Veiculo veiculo = new Veiculo
+            veiculo = new Veiculo
             {
                 Proprietario = proprietario,
                 Placa = placa,
@@ -65,11 +76,10 @@ namespace Alura.Estacionamento.Tests
 
         [Theory]
         [InlineData("Ricardo", "ASD-1414", "Preto", "Gol")]
-        public void LocalizarVeiculoNoPatio(string proprietario, string placa, string cor, string modelo)
+        public void LocalizarVeiculoNoPatioComBaseNaPlaca(string proprietario, string placa, string cor, string modelo)
         {
             //Arrange
-            Patio estacionamento = new Patio();
-            Veiculo veiculo = new Veiculo
+            veiculo = new Veiculo
             {
                 Proprietario = proprietario,
                 Placa = placa,
@@ -92,11 +102,10 @@ namespace Alura.Estacionamento.Tests
         }
 
         [Fact]
-        public void AlterarDadosVeiculo()
+        public void AlterarDadosDoProprioVeiculo()
         {
             //Arrange
-            Patio estacionamento = new Patio();
-            Veiculo veiculo = new Veiculo
+            veiculo = new Veiculo
             {
                 Proprietario = "Ricardo",
                 Placa = "SAF-1503",
@@ -119,6 +128,11 @@ namespace Alura.Estacionamento.Tests
 
             //Assert
             Assert.Equal(alterado.Cor, veiculoAlterado.Cor);
+        }
+
+        public void Dispose()
+        {
+            saidaConsoleTeste.WriteLine("Dispose Invocado.");
         }
     }
 }
