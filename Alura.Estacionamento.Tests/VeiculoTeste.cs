@@ -9,6 +9,7 @@ namespace Alura.Estacionamento.Tests
     public class VeiculoTeste : IDisposable
     {
         private Veiculo veiculo;
+
         public ITestOutputHelper saidaConsoleTeste;
 
         public VeiculoTeste(ITestOutputHelper _saidaConsoleTeste)
@@ -23,7 +24,7 @@ namespace Alura.Estacionamento.Tests
         public void TestaVeiculoAcelerarComParametro10()
         {
             //Arrange
-
+            //Veiculo veiculo = new Veiculo();
             //Act
             veiculo.Acelerar(10);
 
@@ -61,6 +62,52 @@ namespace Alura.Estacionamento.Tests
 
             //Assert
             Assert.Contains("Ficha do Veículo:", dados);
+        }
+
+        [Fact]
+        public void TestarNomeProprietarioVeiculoComMenosDeTresCaracteres()
+        {
+            //Arrange
+            string nomePriprietario = "Ab";
+
+            //Assert
+            Assert.Throws<FormatException>
+            (
+                //Act
+                testCode: () => new Veiculo(nomePriprietario)
+            );
+
+            saidaConsoleTeste.WriteLine($"Result: {nomePriprietario} contém menos de 3 caracteres, gerou a exception");
+        }
+
+        [Fact]
+        public void TestarExcecaoQuatroCaracteresDaPlaca()
+        {
+            //Arrange
+            string placa = "ASDF8888";
+
+            //Act
+            var mensagem = Assert.Throws<FormatException>
+            (
+                () => new Veiculo().Placa = placa
+            );
+
+            //Assert
+            Assert.Equal("O 4° caractere deve ser um hífen", mensagem.Message);
+        }
+
+        [Fact]
+        public void TestarUltimosCaracteresPlacaVeiculoComoNumeros()
+        {
+            //Arrange
+            string placaErrada = "ADS-995X";
+
+            //Assert
+            Assert.Throws<FormatException>
+            (
+                //Act
+                () => new Veiculo().Placa = placaErrada
+            );
         }
 
         public void Dispose()

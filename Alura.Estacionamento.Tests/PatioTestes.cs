@@ -75,7 +75,7 @@ namespace Alura.Estacionamento.Tests
         }
 
         [Theory]
-        [InlineData("Ricardo", "ASD-1414", "Preto", "Gol")]
+        [InlineData("Ricardo", "ASD-1414", "Preto", "Gurgel")]
         public void LocalizarVeiculoNoPatioComBaseNaPlaca(string proprietario, string placa, string cor, string modelo)
         {
             //Arrange
@@ -90,10 +90,32 @@ namespace Alura.Estacionamento.Tests
             estacionamento.RegistrarEntradaVeiculo(veiculo);
 
             //Act
-            var consultado = estacionamento.PesquisaVeiculo(placa);
+            var consultado = estacionamento.PesquisaVeiculoPlaca(placa);
 
             //Assert
             Assert.Equal(placa, consultado.Placa);
+        }
+
+        [Theory]
+        [InlineData("Ricardo", "ASD-1414", "Preto", "Gurgel")]
+        public void LocalizarVeiculoNoPatioComBaseNoIdTicket(string proprietario, string placa, string cor, string modelo)
+        {
+            //Arrange
+            veiculo = new Veiculo()
+            {
+                Proprietario = proprietario,
+                Placa = placa,
+                Cor = cor,
+                Modelo = modelo
+            };
+
+            estacionamento.RegistrarEntradaVeiculo(veiculo);
+
+            //Act
+            var consultado = estacionamento.PesquisaVeiculoIdTicket(veiculo.IdTicket);
+
+            //Assert
+            Assert.Contains("### Ticket Estacionamento Alura ###", consultado.Ticket);
         }
 
         [Fact(Skip = "Teste ainda não implementado")]
