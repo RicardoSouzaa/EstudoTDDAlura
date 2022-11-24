@@ -14,6 +14,7 @@ namespace Alura.Estacionamento.Tests
     {
         private Veiculo veiculo;
         private Patio estacionamento;
+        private Operador operador;
         public ITestOutputHelper saidaConsoleTeste;
 
         public PatioTestes(ITestOutputHelper _saidaConsoleTeste)
@@ -22,6 +23,8 @@ namespace Alura.Estacionamento.Tests
             _saidaConsoleTeste.WriteLine("Construtor Invocado.");
             veiculo = new Veiculo();
             estacionamento = new Patio();
+            operador = new Operador();
+            operador.Nome = "Murilo";
         }
 
         [Fact]
@@ -36,6 +39,9 @@ namespace Alura.Estacionamento.Tests
                 Modelo = "Fusca",
                 Placa = "asd-9999"
             };
+
+            operador.Nome = "Murilo";
+            estacionamento.OperadorPatio = operador;
 
             estacionamento.RegistrarEntradaVeiculo(veiculo);
             estacionamento.RegistrarSaidaVeiculo(veiculo.Placa);
@@ -64,6 +70,9 @@ namespace Alura.Estacionamento.Tests
                 Modelo = modelo
             };
 
+            operador.Nome = "Murilo";
+            estacionamento.OperadorPatio = operador;
+
             estacionamento.RegistrarEntradaVeiculo(veiculo);
             estacionamento.RegistrarSaidaVeiculo(veiculo.Placa);
 
@@ -87,6 +96,8 @@ namespace Alura.Estacionamento.Tests
                 Modelo = modelo
             };
 
+            estacionamento.OperadorPatio = operador;
+
             estacionamento.RegistrarEntradaVeiculo(veiculo);
 
             //Act
@@ -101,7 +112,7 @@ namespace Alura.Estacionamento.Tests
         public void LocalizarVeiculoNoPatioComBaseNoIdTicket(string proprietario, string placa, string cor, string modelo)
         {
             //Arrange
-            veiculo = new Veiculo()
+            veiculo = new Veiculo
             {
                 Proprietario = proprietario,
                 Placa = placa,
@@ -109,6 +120,7 @@ namespace Alura.Estacionamento.Tests
                 Modelo = modelo
             };
 
+            estacionamento.OperadorPatio = operador;
             estacionamento.RegistrarEntradaVeiculo(veiculo);
 
             //Act
@@ -134,6 +146,8 @@ namespace Alura.Estacionamento.Tests
                 Cor = "Verde",
                 Modelo = "Celta"
             };
+
+            estacionamento.OperadorPatio = operador;
 
             estacionamento.RegistrarEntradaVeiculo(veiculo);
 
